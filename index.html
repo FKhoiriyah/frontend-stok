@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <title>Stok Barang</title>
+</head>
+<body>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-9 m-auto">
+                <a href="#" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modalTambah">Tambah Data</a>
+                <div id="pesan_proses"></div>
+                <div class="card">
+                    <div class="card-header">
+                        Data Barang
+                    </div>
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Kode Barang</th>
+                                <th>Nama Barang</th>
+                                <th>Jenis Barang</th>
+                                <th>Stok</th>
+                                <th>Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_barang"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah -->
+    <div id="modalTambah" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header bg-dark">
+                        <h5 class="modal-title text-light">Formulir Tambah</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <div id="pesan_proses_tambah"></div>
+                        <div class="form-group">
+                            <label>Kode Barang :</label>
+                            <input type="text" name="kode_barang" id="kode_barang" class="form-control" placeholder="Kode barang" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Barang :</label>
+                            <input type="text" name="nm_barang" id="nm_barang" class="form-control" placeholder="Nama barang" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Barang :</label>
+                            <select class="form-control" name="id_barangjns" id="id_barangjns" required>
+                                <option value="">[ Pilih Jenis Barang ]</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Stok :</label>
+                            <input type="number" name="stok" id="stok" class="form-control" placeholder="Stok barang" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Harga Barang (Rp) :</label>
+                            <input type="number" name="harga" id="harga" class="form-control" placeholder="Harga barang" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="reset" id="tambahin" onclick="simpanData()" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Edit -->
+    <div id="modalEdit" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header bg-dark">
+                        <h5 class="modal-title text-light">Formulir Edit</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <div class="form-group">
+                            <label>Kode Barang :</label>
+                            <input type="text" name="kode_barang" id="kode_barang_edit" class="form-control" placeholder="Kode barang" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Barang :</label>
+                            <input type="text" name="nm_barang" id="nm_barang_edit" class="form-control" placeholder="Nama barang" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Barang :</label>
+                            <select class="form-control" name="id_barangjns" id="id_barangjns_edit" required>
+                                <option value="">[ Pilih Jenis Barang ]</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Stok :</label>
+                            <input type="number" name="stok" id="stok_edit" class="form-control" placeholder="Stok barang" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Harga Barang (Rp) :</label>
+                            <input type="number" name="harga" id="harga_edit" class="form-control" placeholder="Harga barang" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="reset" id="editin" onclick="editData()" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Hapus -->
+    <div id="modalHapus" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <form>
+                    <input type="hidden" name="kode_barang" id="kode_barang_hapus">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-light">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-dark">
+                        <div class="alert alert-danger">Anda yakin akan menghapus data ini <b id="nama_hapus"></b>? data yang sudah dihapus tidak bisa dikembalikan lagi.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="reset" id="hapusin" onclick="hapusData()" class="btn btn-danger">Hapus Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
